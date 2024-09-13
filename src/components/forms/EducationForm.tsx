@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, LinkIcon } from "lucide-react";
 import { useState } from "react";
-import {UrlForm} from "@/components/ui/forms/UrlForm";
+import { UrlForm } from "@/components/forms/UrlForm";
 
 const schema = z.object({
   degree: z.string().min(1, { message: "Degree is required" }),
@@ -65,7 +65,7 @@ export default function EducationForm({ onSubmit }: EducationFormProps) {
       setValue("endDate", formattedDate);
     }
   };
-  console.log(enteredUrl)
+  console.log(enteredUrl);
 
   const handleUrlSubmit = (url: string) => {
     setEnteredUrl(url);
@@ -269,7 +269,6 @@ export default function EducationForm({ onSubmit }: EducationFormProps) {
         isOpen={isUrlFormOpen}
         onClose={() => setIsUrlFormOpen(false)}
         onSave={handleUrlSubmit}
-        
       />
     </>
   );
