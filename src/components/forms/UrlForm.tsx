@@ -21,7 +21,7 @@ export function UrlForm({ isOpen, onClose, onSave }: URLDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[400px] bg-white">
+      <DialogContent className="sm:max-w-[400px]  bg-white p-4 rounded-lg sm:rounded-xl sm:p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">URL</DialogTitle>
         </DialogHeader>
@@ -31,12 +31,12 @@ export function UrlForm({ isOpen, onClose, onSave }: URLDialogProps) {
             placeholder="Enter Link Here"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="col-span-3 border-gray-300"
+            className="col-span-3 border-gray-300 rounded-md"
           />
         </div>
         <div className="flex justify-end space-x-3">
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSave} className="bg-orange-500 hover:bg-orange-600 text-white">Save</Button>
+          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button onClick={handleSave} className="bg-orange-500 hover:bg-orange-600 text-white rounded-md">Save</Button>
         </div>
       </DialogContent>
     </Dialog>
