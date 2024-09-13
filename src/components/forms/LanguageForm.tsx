@@ -51,6 +51,7 @@ export default function LanguageForm({ onSubmit }: EducationFormProps) {
 
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
+  console.log(enteredUrl);
 
   const handleUrlSubmit = (url: string) => {
     setEnteredUrl(url);
@@ -65,7 +66,6 @@ export default function LanguageForm({ onSubmit }: EducationFormProps) {
       >
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-4 mb-4">
-            {/* Language Input Field with more width */}
             <div className="w-3/4 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.degree`}
@@ -86,7 +86,6 @@ export default function LanguageForm({ onSubmit }: EducationFormProps) {
               )}
             </div>
 
-            {/* Level Select Field */}
             <div className="w-1/4 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.level`}

@@ -2,8 +2,7 @@
 
 import Education from "@/components/Dialogue/Education";
 import Experience from "@/components/Dialogue/Experience";
-import LanguageForm from "@/components/forms/LanguageForm";
-import SkillForm from "@/components/forms/SkillForm";
+import Language from "@/components/Dialogue/Language";
 
 export default function Home() {
  
@@ -13,8 +12,7 @@ export default function Home() {
     <div className="m-6">
     <Education/>
     <Experience/>
-    {/* <SkillForm/> */}
-    <LanguageForm/>
+    <Language/>
     
     </div>
   
