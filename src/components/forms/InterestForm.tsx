@@ -13,7 +13,7 @@ import { LinkIcon } from "lucide-react";
 const schema = z.object({
   interests: z.array(
     z.object({
-      degree: z.string().min(1, { message: "Interest is required" }),
+      interest: z.string().min(1, { message: "Interest is required" }),
     })
   ),
 });
@@ -33,7 +33,7 @@ export default function InterestForm({ onSubmit }: InterestFormProps) {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      interests: [{ degree: "",}],
+      interests: [{ interest: "",}],
     },
   });
 
@@ -68,29 +68,23 @@ export default function InterestForm({ onSubmit }: InterestFormProps) {
               </Label>
               <Input
                 id={`interests.${index}.degree`}
-                {...register(`interests.${index}.degree` as const)}
+                {...register(`interests.${index}.interest` as const)}
                 className="flex-grow border-gray-300"
                 placeholder="Enter Interests/Hobbies"
               />
-              {errors.interests?.[index]?.degree && (
+              {errors.interests?.[index]?.interest && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.interests[index].degree.message}
+                  {errors.interests[index].interest.message}
                 </p>
               )}
             </div>
             <div className="w-1/4 flex flex-col">
-              <Label
-                htmlFor={`skills.${index}.level`}
-                className="text-sm font-medium text-gray-700"
-              >
-                Level<span className="text-red-500">*</span>
-              </Label>
               <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => setIsUrlFormOpen(true)}
-              className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
+              className=" mt-5 px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
               <span className="ml-2">View Link</span>
@@ -101,7 +95,7 @@ export default function InterestForm({ onSubmit }: InterestFormProps) {
 
         <div className="flex justify-center py-2">
           <span
-            onClick={() => append({ degree: ""})}
+            onClick={() => append({ interest: ""})}
             className="text-orange-500 cursor-pointer"
           >
             + Add More
