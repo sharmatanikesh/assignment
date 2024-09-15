@@ -38,7 +38,6 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
     handleSubmit,
     control,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -242,7 +241,7 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
         <div className="flex justify-end">
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
+            className="bg-orange-500 hover:bg-orange-600 text-white mt-2"
           >
             Save
           </Button>
