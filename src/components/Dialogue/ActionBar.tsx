@@ -91,7 +91,7 @@ export default function Component() {
             <span className="p-1">
               <Briefcase className="w-5 h-5" />
             </span>
-            <span className="ml-1">Experience</span>
+            <span className="ml-1  hidden sm:block">Experience</span>
           </button>
           <button
             onClick={handleOpenDialog}
@@ -110,38 +110,38 @@ export default function Component() {
           <span className="p-1 rotate-90">
             <WandSparkles className="w-5 h-5" />
           </span>
-          <span className="ml-1">Save Changes</span>
+          <span className="ml-1 hidden sm:block">Save Changes</span>
         </button>
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
-        <DialogContent className="bg-white text-gray-900 shadow-lg overflow-y-auto sm:max-w-[425px]">
+        <DialogContent className="bg-white text-gray-900  overflow-y-auto sm:max-w-[625px]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              {selectedBlock ? ` ${selectedBlock}` : "Add Block"}
+            <DialogTitle className="text-xl font-semibold text-left">
+              {selectedBlock ? `Add ${selectedBlock}` : "Add Block"}
             </DialogTitle>
           </DialogHeader>
           <hr className="border-t border-gray-200 my-2" />
           {!selectedBlock ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 p-1">
               {blockOptions.map((option) => (
                 <Button
                   key={option.label}
                   variant="outline"
-                  className={`flex flex-col items-center justify-center p-3 h-24 text-xs font-medium border rounded-lg ${
+                  className={`flex flex-row items-center justify-start  p-3 h-14  hover:bg-green-100 font-medium border  rounded-lg ${
                     option.group === "middle" ? "ring-2 ring-blue-200" : ""
                   }`}
                   onClick={() => handleBlockClick(option.label)}
                 >
-                  <div className="mb-2">{option.icon}</div>
-                  <span className="text-center line-clamp-2">
+                  <div className=" border rounded-md p-1" >{option.icon}</div>
+                  <span className="text-center line-clamp-2 ml-1 font-semibold p-1">
                     {option.label}
                   </span>
                 </Button>
               ))}
             </div>
           ) : (
-            <div className="p-4">
+            <div className="p-2">
               {selectedBlock.toLowerCase().includes("experience") && (
                 <ExperienceForm onClose={() => setSelectedBlock(null)} />
               )}

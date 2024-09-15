@@ -68,10 +68,10 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-white p-4 rounded-lg shadow-sm"
+        className="space-y-1 bg-white p-2 rounded-lg "
       >
         {fields.map((field, index) => (
-          <div key={field.id} className="flex gap-4 mb-4">
+          <div key={field.id} className="flex gap-4 mb-2">
             <div className="w-3/4 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.degree`}
@@ -92,7 +92,7 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
               )}
             </div>
 
-            <div className="w-1/4 flex flex-col">
+            <div className="w-1/2 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.level`}
                 className="text-sm font-medium text-gray-700"
