@@ -8,9 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, LinkIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
+import { DatePicker } from "@/lib/DatePicker";
+import { format } from "date-fns";
 
 const schema = z.object({
   certificate: z.string().min(1, { message: "Certificate is required" }),
@@ -38,10 +40,15 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
 
+
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
+
   const handleCurrentDateChange = (checked: boolean) => {
     setIsNoExpiry(checked);
     if (checked) {
       const currentDate = new Date();
+      setSelectedEndDate(currentDate);
       const formattedDate = `${String(currentDate.getMonth() + 1).padStart(
         2,
         "0"
@@ -50,6 +57,17 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
     }
   };
   console.log(enteredUrl);
+
+  const handleDateChange = (field: "startDate" | "endDate", date: Date) => {
+    const formattedDate = format(date, "MM-yyyy");
+    setValue(field, formattedDate);
+    if (field === "startDate") {
+      setSelectedStartDate(date);
+    } else {
+      setSelectedEndDate(date);
+    }
+  };
+
   const onSubmit = (data: FormData) => {
     console.log('Form submitted:', data);
     onClose();
@@ -106,12 +124,16 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               <Input
                 id="startDate"
                 {...register("startDate")}
+                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
                 className="border-gray-300"
                 placeholder="MM/YYYY"
+                onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <DatePicker
+                selectedDate={selectedStartDate}
+                onDateChange={(date) => handleDateChange("startDate", date)}
+              />
             </div>
-            
           </div>
 
           <div className="space-y-2">
@@ -125,13 +147,17 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               <Input
                 id="endDate"
                 {...register("endDate")}
+                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
                 className="border-gray-300 "
                 placeholder="MM/YYYY"
                 disabled={isNoExpiry}
+                onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <DatePicker
+              selectedDate={selectedEndDate}
+              onDateChange={(date) => handleDateChange("endDate", date)}
+            />
             </div>
-            
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="noExpiry"
