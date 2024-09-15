@@ -130,7 +130,7 @@ export default function Component() {
           </DialogHeader>
           <hr className="border-t border-gray-200 " />
           {!selectedBlock ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 p-1">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 p-1 max-h-96 overflow-auto">
               {blockOptions.map((option) => (
                 <Button
                   key={option.label}

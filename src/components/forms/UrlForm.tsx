@@ -23,7 +23,7 @@ export function UrlForm({ isOpen, onClose, onSave }: URLDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[400px]  bg-white p-4 rounded-lg sm:rounded-xl sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">URL</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-gray-900">URL</DialogTitle>
         </DialogHeader>
         <div className="grid gap-1 py-1">
           <Input
@@ -31,11 +31,11 @@ export function UrlForm({ isOpen, onClose, onSave }: URLDialogProps) {
             placeholder="Enter Link Here"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="col-span-3 border-gray-300 rounded-md"
+            className="col-span-3 border-gray-300 rounded-md text-gray-900"
           />
         </div>
         <div className="flex justify-end space-x-3">
-          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button variant="outline" onClick={onClose} className="rounded-md text-gray-900">Cancel</Button>
           <Button onClick={handleSave} className="bg-orange-500 hover:bg-orange-600 text-white rounded-md">Save</Button>
         </div>
       </DialogContent>
