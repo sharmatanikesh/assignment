@@ -14,12 +14,8 @@ import { UrlForm } from "@/components/forms/UrlForm";
 
 const schema = z.object({
   certificate: z.string().min(1, { message: "Certificate is required" }),
-  startDate: z
-    .string()
-    .regex(/^\d{2}\/\d{4}$/, { message: "Date must be in MM/YYYY format" }),
-  endDate: z
-    .string()
-    .regex(/^\d{2}\/\d{4}$/, { message: "Date must be in MM/YYYY format" }),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
   description: z.string().optional(),
 });
 
@@ -69,10 +65,10 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-1 bg-white p-2 rounded-lg shadow-sm"
+        className="space-y-1 bg-white p-1 rounded-lg "
       >
         <div className="space-y-2">
-          <Label htmlFor="certificate" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="certificate" className="text-sm font-semibold text-black">
             Certificate<span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
@@ -102,7 +98,7 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
           <div className="space-y-2">
             <Label
               htmlFor="startDate"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-black"
             >
               Start Date
             </Label>
@@ -115,15 +111,13 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               />
               <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
-            {errors.startDate && (
-              <p className="text-red-500 text-sm">{errors.startDate.message}</p>
-            )}
+            
           </div>
 
           <div className="space-y-2">
             <Label
               htmlFor="endDate"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-black"
             >
               End Date
             </Label>
@@ -131,15 +125,13 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               <Input
                 id="endDate"
                 {...register("endDate")}
-                className="border-gray-300"
+                className="border-gray-300 "
                 placeholder="MM/YYYY"
                 disabled={isNoExpiry}
               />
               <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
-            {errors.endDate && (
-              <p className="text-red-500 text-sm">{errors.endDate.message}</p>
-            )}
+            
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="noExpiry"
@@ -149,7 +141,7 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               />
               <Label
                 htmlFor="noExpiry"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-black"
               >
                 No Expiry
               </Label>
@@ -160,7 +152,7 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
         <div className="space-y-2">
           <Label
             htmlFor="description"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-semibold text-black"
           >
             Description
           </Label>
@@ -175,7 +167,7 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
         <div className="flex justify-end">
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
+            className="bg-orange-500 hover:bg-orange-600 mt-1 text-white"
           >
             Save
           </Button>

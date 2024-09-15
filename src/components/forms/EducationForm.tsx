@@ -21,16 +21,14 @@ import { UrlForm } from "@/components/forms/UrlForm";
 
 const schema = z.object({
   degree: z.string().min(1, { message: "Degree is required" }),
-  school: z.string().min(1, { message: "School is required" }),
-  city: z.string().min(1, { message: "City is required" }),
-  country: z.string().min(1, { message: "Country is required" }),
+  school: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+  description:z.string().optional(),
   startDate: z
-    .string()
-    .regex(/^\d{2}\/\d{4}$/, { message: "Date must be in MM/YYYY format" }),
+    .string().optional(),
   endDate: z
-    .string()
-    .regex(/^\d{2}\/\d{4}$/, { message: "Date must be in MM/YYYY format" }),
-  description: z.string().optional(),
+    .string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -82,10 +80,10 @@ export default function EducationForm({ onClose }: EducationFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-1 bg-white p-2 rounded-lg shadow-sm"
+        className=" bg-white p-1 rounded-lg "
       >
         <div className="space-y-2">
-          <Label htmlFor="degree" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="degree" className="text-sm font-semibold text-black">
             Degree<span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
@@ -111,8 +109,8 @@ export default function EducationForm({ onClose }: EducationFormProps) {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="school" className="text-sm font-medium text-gray-700">
+        <div className="space-y-1">
+          <Label htmlFor="school"className="text-sm font-semibold text-black">
             School
           </Label>
           <Input
@@ -127,8 +125,8 @@ export default function EducationForm({ onClose }: EducationFormProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="city" className="text-sm font-medium text-gray-700">
+          <div className="space-y-1">
+            <Label htmlFor="city" className="text-sm font-semibold text-black">
               City
             </Label>
             <Controller
@@ -150,15 +148,13 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 </Select>
               )}
             />
-            {errors.city && (
-              <p className="text-red-500 text-sm">{errors.city.message}</p>
-            )}
+           
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label
               htmlFor="country"
-              className="text-sm font-medium text-gray-700"
+             className="text-sm font-semibold text-black"
             >
               Country
             </Label>
@@ -181,17 +177,15 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 </Select>
               )}
             />
-            {errors.country && (
-              <p className="text-red-500 text-sm">{errors.country.message}</p>
-            )}
+           
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label
               htmlFor="startDate"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-black"
             >
               Start Date
             </Label>
@@ -204,15 +198,13 @@ export default function EducationForm({ onClose }: EducationFormProps) {
               />
               <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
-            {errors.startDate && (
-              <p className="text-red-500 text-sm">{errors.startDate.message}</p>
-            )}
+          
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label
               htmlFor="endDate"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-semibold text-black"
             >
               End Date
             </Label>
@@ -226,9 +218,7 @@ export default function EducationForm({ onClose }: EducationFormProps) {
               />
               <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
-            {errors.endDate && (
-              <p className="text-red-500 text-sm">{errors.endDate.message}</p>
-            )}
+          
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="current"
@@ -246,10 +236,10 @@ export default function EducationForm({ onClose }: EducationFormProps) {
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label
             htmlFor="description"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-semibold text-black"
           >
             Description
           </Label>
@@ -261,7 +251,7 @@ export default function EducationForm({ onClose }: EducationFormProps) {
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-2">
           <Button
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 text-white"

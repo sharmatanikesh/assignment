@@ -19,13 +19,13 @@ import { cn } from '@/lib/utils';
 const schema = z.object({
   company: z.string().min(1, { message: 'Company name is required' }),
   title: z.string().min(1, { message: 'Title is required' }),
-  type: z.string().min(1, { message: 'Type is required' }),
+  type: z.string().optional(),
   city: z.string().min(1, { message: 'City is required' }),
-  country: z.string().min(1, { message: 'Country is required' }),
-  startDate: z.date(),
+  country: z.string().optional(),
+  startDate: z.date().optional(),
   endDate: z.date().optional(),
-  present: z.boolean(),
-  skills: z.array(z.string()).nonempty({ message: 'At least one skill is required' }),
+  present: z.boolean().optional(),
+  skills: z.array(z.string()).optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -68,22 +68,22 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg p-1">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-1 rounded-lg">
         <div className="space-y-1">
-          <Label htmlFor="company">Company Name<span className="text-red-500">*</span></Label>
+          <Label htmlFor="company" className='font-semibold text-black'>Company Name<span className="text-red-500">*</span></Label>
           <Input id="company" {...register('company')} placeholder="Enter company name" />
           {errors.company && <p className="text-red-500 text-sm">{errors.company.message}</p>}
         </div>
 
         <div className="flex gap-2">
-          <div className="flex-grow space-y-2">
-            <Label htmlFor="title">Title<span className="text-red-500">*</span></Label>
+          <div className="flex-grow space-y-1">
+            <Label htmlFor="title" className='font-semibold text-black'>Title<span className="text-red-500">*</span></Label>
             <Input id="title" {...register('title')} placeholder="Type Here..." />
             {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
           </div>
-          <div className="w-1/3 space-y-2">
-            <Label htmlFor="type">Type</Label>
+          <div className="w-1/3 space-y-1">
+            <Label htmlFor="type" className='font-semibold text-black'>Type</Label>
             <Controller
               name="type"
               control={control}
@@ -100,13 +100,12 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
                 </Select>
               )}
             />
-            {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
           </div>
         </div>
 
         <div className="flex gap-2">
-          <div className="w-1/2 space-y-2">
-            <Label htmlFor="city">City</Label>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="city" className='font-semibold text-black'>City</Label>
             <Controller
               name="city"
               control={control}
@@ -123,10 +122,9 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
                 </Select>
               )}
             />
-            {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
           </div>
-          <div className="w-1/2 space-y-2">
-            <Label htmlFor="country">Country</Label>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="country" className='font-semibold text-black'>Country</Label>
             <Controller
               name="country"
               control={control}
@@ -143,13 +141,12 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
                 </Select>
               )}
             />
-            {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
           </div>
         </div>
 
         <div className="flex gap-2">
-          <div className="w-1/2 space-y-2">
-            <Label htmlFor="start-date">Start Date</Label>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="start-date" className='font-semibold text-black'>Start Date</Label>
             <Controller
               control={control}
               name="startDate"
@@ -181,10 +178,9 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
                 </Popover>
               )}
             />
-            {errors.startDate && <p className="text-red-500 text-sm">{errors.startDate.message}</p>}
           </div>
-          <div className="w-1/2 space-y-2">
-            <Label htmlFor="end-date">End Date</Label>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="end-date" className='font-semibold text-black'>End Date</Label>
             <Controller
               control={control}
               name="endDate"
@@ -217,7 +213,6 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
                 </Popover>
               )}
             />
-            {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate.message}</p>}
             <div className="flex items-center gap-2">
               <Checkbox
                 id="present"
@@ -230,9 +225,9 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="skills">Skills Used</Label>
-          <div className="flex flex-wrap gap-2">
+        <div className="space-y-1">
+          <Label htmlFor="skills" className='font-semibold text-black'>Skills Used</Label>
+          <div className="flex flex-wrap gap-2 border rounded-md p-2">
             {skills.map((skill) => (
               <span key={skill} className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center">
                 {skill}
@@ -242,7 +237,6 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
               </span>
             ))}
           </div>
-          {errors.skills && <p className="text-red-500 text-sm">{errors.skills.message}</p>}
         </div>
 
         <div className="flex justify-end">
@@ -254,6 +248,6 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
           </Button>
         </div>
       </form>
-    </div>
+   
   );
 }

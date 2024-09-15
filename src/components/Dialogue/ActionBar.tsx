@@ -44,7 +44,7 @@ const blockOptions: BlockOption[] = [
   { icon: <User className="w-6 h-6" />, label: "About" },
   {
     icon: <Briefcase className="w-10 h-6" />,
-    label: "Professional Experience",
+    label: "Experience",
   },
   { icon: <GraduationCap className="w-6 h-6" />, label: "Education" },
   { icon: <FolderKanban className="w-6 h-6" />, label: "Projects" },
@@ -121,7 +121,7 @@ export default function Component() {
               {selectedBlock ? `Add ${selectedBlock}` : "Add Block"}
             </DialogTitle>
           </DialogHeader>
-          <hr className="border-t border-gray-200 my-2" />
+          <hr className="border-t border-gray-200 " />
           {!selectedBlock ? (
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 p-1">
               {blockOptions.map((option) => (
