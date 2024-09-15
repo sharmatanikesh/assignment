@@ -1,40 +1,103 @@
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   User,
+  Briefcase,
+  GraduationCap,
+  FolderKanban,
+  Lightbulb,
+  BookOpen,
+  Award,
+  FileCheck,
+  Languages,
+  Heart,
+  Phone,
+  Layout,
   Plus,
   Grid,
   Share2,
-  Briefcase,
   WandSparkles,
 } from "lucide-react";
-import { useState } from "react";
-import AddBlock from "./AddBlock";
+import ExperienceForm from "../forms/ExperienceForm";
+import EducationForm from "../forms/EducationForm";
+import AwardForm from "../forms/AwardForm";
+import CourseForm from "../forms/CourseForm";
+import SkillForm from "../forms/SkillForm";
+import LanguageForm from "../forms/LanguageForm";
+import InterestForm from "../forms/InterestForm";
+import ContactForm from "../forms/ContactForm";
+import CertificateForm from "../forms/CertificateForm";
 
-export default function FloatingActionBar() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+type BlockOption = {
+  icon: React.ReactNode;
+  label: string;
+  group?: string;
+};
 
-  const handleBlock = () => {
-    setIsOpen(!isOpen);
+const blockOptions: BlockOption[] = [
+  { icon: <User className="w-6 h-6" />, label: "About" },
+  {
+    icon: <Briefcase className="w-10 h-6" />,
+    label: "Professional Experience",
+  },
+  { icon: <GraduationCap className="w-6 h-6" />, label: "Education" },
+  { icon: <FolderKanban className="w-6 h-6" />, label: "Projects" },
+  { icon: <Lightbulb className="w-6 h-6" />, label: "Skill", group: "middle" },
+  { icon: <BookOpen className="w-6 h-6" />, label: "Course", group: "middle" },
+  { icon: <Award className="w-6 h-6" />, label: "Award", group: "middle" },
+  {
+    icon: <FileCheck className="w-6 h-6" />,
+    label: "Certificate",
+    group: "middle",
+  },
+  { icon: <Languages className="w-6 h-6" />, label: "Language" },
+  { icon: <Heart className="w-6 h-6" />, label: "Interest" },
+  { icon: <Phone className="w-6 h-6" />, label: "Contact" },
+  { icon: <Layout className="w-6 h-6" />, label: "Custom" },
+];
+
+export default function Component() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
+
+  const handleBlockClick = (label: string) => {
+    setSelectedBlock(label);
+  };
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+    setSelectedBlock(null); // Reset selected block when opening dialog
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedBlock(null);
   };
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 max-w-3xl mx-auto px-4">
-      <div className="flex items-center justify-between bg-white rounded-md px-4 py-2 shadow-lg">
+      <div className="flex items-center  bg-white rounded-md px-4 py-2 shadow-lg">
         <div className="flex items-center space-x-2">
           <button className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md">
             <User className="w-5 h-5" />
           </button>
-          <button className="ml-2 p-1 inline-flex items-center bg-orange-500 text-white px-2 rounded-md text-sm font-medium">
+          <button className="p-1 inline-flex items-center border bg-orange-500 text-white px-2 rounded-md text-sm font-medium">
             <span className="p-1">
-              <Briefcase />
+              <Briefcase className="w-5 h-5" />
             </span>
             <span className="ml-1">Experience</span>
           </button>
           <button
-            onClick={handleBlock}
+            onClick={handleOpenDialog}
             className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md"
           >
             <Plus className="w-5 h-5" />
-            {isOpen && <AddBlock />}
           </button>
           <button className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md">
             <Grid className="w-5 h-5" />
@@ -45,11 +108,74 @@ export default function FloatingActionBar() {
         </div>
         <button className="ml-2 p-1 inline-flex items-center bg-green-500 text-white px-2 rounded-md text-sm font-medium">
           <span className="p-1 rotate-90">
-            <WandSparkles />
+            <WandSparkles className="w-5 h-5" />
           </span>
           <span className="ml-1">Save Changes</span>
         </button>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+        <DialogContent className="bg-white text-gray-900 shadow-lg overflow-y-auto sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              {selectedBlock ? ` ${selectedBlock}` : "Add Block"}
+            </DialogTitle>
+          </DialogHeader>
+          <hr className="border-t border-gray-200 my-2" />
+          {!selectedBlock ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 p-4">
+              {blockOptions.map((option) => (
+                <Button
+                  key={option.label}
+                  variant="outline"
+                  className={`flex flex-col items-center justify-center p-3 h-24 text-xs font-medium border rounded-lg ${
+                    option.group === "middle" ? "ring-2 ring-blue-200" : ""
+                  }`}
+                  onClick={() => handleBlockClick(option.label)}
+                >
+                  <div className="mb-2">{option.icon}</div>
+                  <span className="text-center line-clamp-2">
+                    {option.label}
+                  </span>
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <div className="p-4">
+              {selectedBlock.toLowerCase().includes("experience") && (
+                <ExperienceForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "About" && (
+                <CertificateForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Education" && (
+                <EducationForm onClose={() => setSelectedBlock(null)} />
+              )}
+               {selectedBlock === "Award" && (
+                <AwardForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Course" && (
+                <CourseForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Skill" && (
+                <SkillForm onClose={() => setSelectedBlock(null)} />
+              )}
+               {selectedBlock === "Language" && (
+                <LanguageForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Interest" && (
+                <InterestForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Contact" && (
+                <ContactForm onClose={() => setSelectedBlock(null)} />
+              )}
+               {selectedBlock === "Certificate" && (
+                <CertificateForm onClose={() => setSelectedBlock(null)} />
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

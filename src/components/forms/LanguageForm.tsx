@@ -28,10 +28,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 interface EducationFormProps {
-  onSubmit: (data: FormData) => void;
+  onClose: () => void;
 }
 
-export default function LanguageForm({ onSubmit }: EducationFormProps) {
+export default function LanguageForm({ onClose }: EducationFormProps) {
   const {
     register,
     handleSubmit,
@@ -48,6 +48,12 @@ export default function LanguageForm({ onSubmit }: EducationFormProps) {
     name: "skills",
     control,
   });
+
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data);
+    onClose();
+    // Handle form submission logic here, e.g., send data to the server or update state
+  };
 
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);

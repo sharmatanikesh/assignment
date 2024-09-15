@@ -22,10 +22,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 interface ContactFormProps {
-  onSubmit: (data: FormData) => void;
+  onClose: () => void;
 }
 
-export default function ContactForm({ onSubmit }: ContactFormProps) {
+export default function ContactForm({ onClose }: ContactFormProps) {
   const {
     handleSubmit,
     control,
@@ -55,6 +55,11 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
     setIsUrlFormOpen(false);
   };
 
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data);
+    onClose();
+    // Handle form submission logic here, e.g., send data to the server or update state
+  };
   return (
     <>
       <div className="flex mb-2">

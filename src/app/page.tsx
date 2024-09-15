@@ -11,6 +11,8 @@ import Experience from "@/components/Dialogue/Experience";
 import Interest from "@/components/Dialogue/Interest";
 import Language from "@/components/Dialogue/Language";
 import Skill from "@/components/Dialogue/Skill";
+import AddBlockDialog from "@/components/Dialogue/testing";
+import ExperienceForm from "@/components/forms/ExperienceForm";
 
 export default function Home() {
  
@@ -20,10 +22,11 @@ export default function Home() {
     <div>
     <Actionbar/>
     </div>
-   
+    
     <div className="m-6">
     <Education/>
   
+    <AddBlockDialog/>
     <Language/>
     <Certificate/>
     <Award/>

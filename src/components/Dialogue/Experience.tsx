@@ -44,7 +44,7 @@ export default function Experience() {
           </DialogTitle>
           <hr className="border-t border-gray-300 my-4" />
         </DialogHeader>
-        <ExperienceForm onSubmit={onSubmit} />
+       
       </DialogContent>
     </Dialog>
   );

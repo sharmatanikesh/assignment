@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -10,6 +10,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { X } from 'lucide-react';
+import { format } from 'date-fns';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 // Define validation schema
 const schema = z.object({
@@ -18,24 +22,23 @@ const schema = z.object({
   type: z.string().min(1, { message: 'Type is required' }),
   city: z.string().min(1, { message: 'City is required' }),
   country: z.string().min(1, { message: 'Country is required' }),
-  startDate: z.string().regex(/^\d{2}\/\d{4}$/, { message: 'Date must be in MM/YYYY format' }),
-  endDate: z.string().regex(/^\d{2}\/\d{4}$/, { message: 'Date must be in MM/YYYY format' }),
+  startDate: z.date(),
+  endDate: z.date().optional(),
   present: z.boolean(),
   skills: z.array(z.string()).nonempty({ message: 'At least one skill is required' }),
 });
 
 type FormData = z.infer<typeof schema>;
-
-interface ExperienceFormProps {
-  onSubmit: (data: FormData) => void;
+interface ExperienceFormProps{
+  onClose:()=>void
 }
-
-export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
+export default function ExperienceForm({onClose}:ExperienceFormProps) {
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -54,23 +57,25 @@ export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
   const handleCurrentDateChange = (checked: boolean) => {
     setIsCurrentDate(checked);
     if (checked) {
-      const currentDate = new Date();
-      const formattedDate = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`;
-      setValue('endDate', formattedDate);
-    } else {
-      setValue('endDate', '');
+      setValue('endDate', undefined);
     }
   };
 
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data);
+    onClose();
+    // Handle form submission logic here, e.g., send data to the server or update state
+  };
+
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg p-6">
+    <div className="w-full max-w-md mx-auto bg-white rounded-lg p-1">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label htmlFor="company">Company Name<span className="text-red-500">*</span></Label>
           <Input id="company" {...register('company')} placeholder="Enter company name" />
           {errors.company && <p className="text-red-500 text-sm">{errors.company.message}</p>}
         </div>
-        
+
         <div className="flex gap-2">
           <div className="flex-grow space-y-2">
             <Label htmlFor="title">Title<span className="text-red-500">*</span></Label>
@@ -83,10 +88,7 @@ export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
               name="type"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="type">
                     <SelectValue placeholder="Full Time" />
                   </SelectTrigger>
@@ -109,10 +111,7 @@ export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
               name="city"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="city">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -132,10 +131,7 @@ export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
               name="country"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="country">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -154,12 +150,73 @@ export default function ExperienceForm({ onSubmit }: ExperienceFormProps) {
         <div className="flex gap-2">
           <div className="w-1/2 space-y-2">
             <Label htmlFor="start-date">Start Date</Label>
-            <Input id="start-date" {...register('startDate')} placeholder="MM/YYYY" />
+            <Controller
+              control={control}
+              name="startDate"
+              render={({ field }) => (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "MM/yyyy")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+            />
             {errors.startDate && <p className="text-red-500 text-sm">{errors.startDate.message}</p>}
           </div>
           <div className="w-1/2 space-y-2">
             <Label htmlFor="end-date">End Date</Label>
-            <Input id="end-date" {...register('endDate')} placeholder="MM/YYYY" disabled={isCurrentDate} />
+            <Controller
+              control={control}
+              name="endDate"
+              render={({ field }) => (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                      disabled={isCurrentDate}
+                    >
+                      {field.value ? (
+                        format(field.value, "MM/yyyy")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+            />
             {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate.message}</p>}
             <div className="flex items-center gap-2">
               <Checkbox

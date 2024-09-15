@@ -21,10 +21,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 interface InterestFormProps {
-  onSubmit: (data: FormData) => void;
+  onClose: () => void;
 }
 
-export default function InterestForm({ onSubmit }: InterestFormProps) {
+export default function InterestForm({ onClose }: InterestFormProps) {
   const {
     register,
     handleSubmit,
@@ -51,6 +51,11 @@ export default function InterestForm({ onSubmit }: InterestFormProps) {
     setIsUrlFormOpen(false);
   };
 
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data);
+    onClose();
+    // Handle form submission logic here, e.g., send data to the server or update state
+  };
   return (
     <>
       <form

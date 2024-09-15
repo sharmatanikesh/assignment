@@ -25,11 +25,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-interface CertificateFormProps {
-  onSubmit: (data: FormData) => void;
+interface CertificateFormProps{
+  onClose:()=>void
 }
-
-export default function CertificateForm({ onSubmit }: CertificateFormProps) {
+export default function CertificateForm({ onClose }: CertificateFormProps) {
   const {
     register,
     handleSubmit,
@@ -55,6 +54,11 @@ export default function CertificateForm({ onSubmit }: CertificateFormProps) {
     }
   };
   console.log(enteredUrl);
+  const onSubmit = (data: FormData) => {
+    console.log('Form submitted:', data);
+    onClose();
+    // Handle form submission logic here, e.g., send data to the server or update state
+  };
 
   const handleUrlSubmit = (url: string) => {
     setEnteredUrl(url);
