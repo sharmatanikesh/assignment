@@ -92,7 +92,7 @@ export default function InterestForm({ onClose }: InterestFormProps) {
               className=" mt-5 px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">View Link</span>
+              <span className="ml-2 p-0.5 pr-2">View Link</span>
             </Button>
             </div>
           </div>
