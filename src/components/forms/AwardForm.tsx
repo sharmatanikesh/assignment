@@ -13,11 +13,9 @@ import { UrlForm } from "@/components/forms/UrlForm";
 
 const schema = z.object({
   award: z.string().min(1, { message: "Award is required" }),
-  issuedBy: z.string().min(1, { message: "Issued by is required" }),
+  issuedBy: z.string().optional(),
   date: z
-    .string()
-    .regex(/^\d{2}\/\d{4}$/, { message: "Date must be in MM/YYYY format" }),
-  description: z.string().optional(),
+    .string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -54,10 +52,10 @@ export default function AwardForm({ onClose }: CourseFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-1 bg-white p-2 rounded-lg shadow-sm"
+        className="space-y-1 bg-white p-2 rounded-lg "
       >
-        <div className="space-y-2">
-          <Label htmlFor="award" className="text-sm font-medium text-gray-700">
+        <div className="space-y-1">
+          <Label htmlFor="award" className="text-sm font-semibold text-black">
             Award Name<span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
@@ -83,8 +81,8 @@ export default function AwardForm({ onClose }: CourseFormProps) {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="issuedBy" className="text-sm font-medium text-gray-700">
+        <div className="space-y-1">
+          <Label htmlFor="issuedBy" className="text-sm font-semibold text-black">
             Issued By
           </Label>
           <Input
@@ -93,15 +91,13 @@ export default function AwardForm({ onClose }: CourseFormProps) {
             className="border-gray-300"
             placeholder="Enter Institution"
           />
-          {errors.issuedBy && (
-            <p className="text-red-500 text-sm">{errors.issuedBy.message}</p>
-          )}
+         
         </div>
         <div className="grid grid-cols-1 gap-4">
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label
               htmlFor="date"
-              className="text-sm font-medium text-gray-700"
+             className="text-sm font-semibold text-black"
             >
               Date
             </Label>
@@ -114,28 +110,26 @@ export default function AwardForm({ onClose }: CourseFormProps) {
               />
               <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
-            {errors.date && (
-              <p className="text-red-500 text-sm">{errors.date.message}</p>
-            )}
+            
           </div>
         </div>
 
         <div className="space-y-2">
           <Label
             htmlFor="description"
-            className="text-sm font-medium text-gray-700"
+           className="text-sm font-semibold text-black"
           >
             Description
           </Label>
           <Textarea
             id="description"
             {...register("description")}
-            className="border-gray-300 h-24"
+            className="border-gray-300 h-20 "
             placeholder="Type Here..."
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-1">
           <Button
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 text-white"

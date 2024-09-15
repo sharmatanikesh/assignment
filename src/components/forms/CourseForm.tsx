@@ -82,7 +82,7 @@ export default function CourseForm({ onClose }: CourseFormProps) {
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-white  rounded-lg "
       >
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label htmlFor="course" className="text-sm font-semibold text-black">
             Course Name<span className="text-red-500">*</span>
           </Label>
@@ -246,7 +246,7 @@ export default function CourseForm({ onClose }: CourseFormProps) {
           <Textarea
             id="description"
             {...register("description")}
-            className="border-gray-300 h-24"
+            className="border-gray-300 h-20"
             placeholder="Type Here..."
           />
         </div>

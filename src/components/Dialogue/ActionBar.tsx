@@ -44,7 +44,7 @@ type BlockOption = {
 const blockOptions: BlockOption[] = [
   { icon: <User className="w-6 h-6" />, label: "About" },
   {
-    icon: <Briefcase className="w-10 h-6" />,
+    icon: <Briefcase className="w-6 h-6" />,
     label: "Experience",
   },
   { icon: <GraduationCap className="w-6 h-6" />, label: "Education" },
@@ -95,7 +95,7 @@ export default function Component() {
           </button>
           <button className="p-1 inline-flex items-center border bg-orange-500 text-white px-2 rounded-md text-sm font-medium">
             <span className="p-1">
-              <Briefcase className="w-5 h-5" />
+              <Briefcase className="w-4 h-4" />
             </span>
             <span className="ml-1  hidden sm:block">Experience</span>
           </button>
@@ -140,8 +140,8 @@ export default function Component() {
                   }`}
                   onClick={() => handleBlockClick(option.label)}
                 >
-                  <div className=" border rounded-md p-1" >{option.icon}</div>
-                  <span className="text-center line-clamp-2 ml-1 font-semibold p-1">
+                  <div className=" border rounded-md p-0.5" >{option.icon}</div>
+                  <span className="text-center line-clamp-2  font-semibold p-1">
                     {option.label}
                   </span>
                 </Button>

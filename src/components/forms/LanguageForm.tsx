@@ -68,14 +68,14 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-1 bg-white p-2 rounded-lg "
+        className="space-y-1 bg-white  rounded-lg "
       >
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-4 mb-2">
             <div className="w-3/4 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.degree`}
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-semibold text-black"
               >
                 Add Language<span className="text-red-500">*</span>
               </Label>
@@ -95,7 +95,7 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
             <div className="w-1/2 flex flex-col">
               <Label
                 htmlFor={`skills.${index}.level`}
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-semibold text-black"
               >
                 Level<span className="text-red-500">*</span>
               </Label>
@@ -126,7 +126,7 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
           </div>
         ))}
 
-        <div className="flex justify-center py-2">
+        <div className="flex justify-center py-1">
           <span
             onClick={() => append({ degree: "", level: "" })}
             className="text-orange-500 cursor-pointer"
