@@ -64,9 +64,9 @@ export default function ContactForm({ onClose }: ContactFormProps) {
     <>
       <div className="flex mb-2">
         <button
-          className={`flex-1 py-2 text-sm font-medium ${
+          className={`flex-1 py-2 text-sm font-semibold ${
             activeTab === "social"
-              ? "text-orange-500 border-b-2 border-orange-500"
+              ? "text-black border-b-2 border-orange-500"
               : "text-gray-500 border-b border-gray-500"
           }`}
           onClick={() => setActiveTab("social")}
@@ -74,7 +74,7 @@ export default function ContactForm({ onClose }: ContactFormProps) {
           Social
         </button>
         <button
-          className={`flex-1 py-2 text-sm font-medium ${
+          className={`flex-1 py-2 text-sm font-semibold ${
             activeTab === "resume"
               ? "text-orange-500 border-b-2 border-orange-500"
               : "text-gray-500 border-b border-gray-500"
@@ -95,7 +95,7 @@ export default function ContactForm({ onClose }: ContactFormProps) {
               <div className="w-3/4 flex flex-col">
                 <Label
                   htmlFor={`interests.${index}.degree`}
-                  className="text-sm font-medium text-gray-700"
+                  className="text-sm font-semibold text-black"
                 >
                   Platform<span className="text-red-500">*</span>
                 </Label>
@@ -121,10 +121,10 @@ export default function ContactForm({ onClose }: ContactFormProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => setIsUrlFormOpen(true)}
-                className=" mt-5 px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
+                className=" mt-6  p-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
               >
                 <LinkIcon className="h-4 w-4" />
-                <span className="ml-2">Add Link</span>
+                <span className="ml-2 p-0.5 pr-2">Add Link</span>
               </Button>
               </div>
             </div>

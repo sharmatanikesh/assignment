@@ -60,14 +60,14 @@ export default function InterestForm({ onClose }: InterestFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-white p-4 rounded-lg shadow-sm"
+        className="space-y-4 bg-white  rounded-lg "
       >
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-4 mb-4">
             <div className="w-3/4 flex flex-col">
               <Label
                 htmlFor={`interests.${index}.degree`}
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-semibold text-black"
               >
                 Add Interest<span className="text-red-500">*</span>
               </Label>
@@ -98,7 +98,7 @@ export default function InterestForm({ onClose }: InterestFormProps) {
           </div>
         ))}
 
-        <div className="flex justify-center py-2">
+        <div className="flex justify-center ">
           <span
             onClick={() => append({ interest: ""})}
             className="text-orange-500 cursor-pointer"
@@ -107,7 +107,7 @@ export default function InterestForm({ onClose }: InterestFormProps) {
           </span>
         </div>
 
-        <div className="flex justify-end pt-2">
+        <div className="flex justify-end ">
           <Button
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 text-white"

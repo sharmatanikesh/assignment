@@ -16,6 +16,7 @@ const schema = z.object({
   issuedBy: z.string().optional(),
   date: z
     .string().optional(),
+    description:z.string().optional()
 });
 
 type FormData = z.infer<typeof schema>;
