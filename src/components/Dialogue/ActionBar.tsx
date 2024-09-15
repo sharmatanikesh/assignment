@@ -33,6 +33,7 @@ import LanguageForm from "../forms/LanguageForm";
 import InterestForm from "../forms/InterestForm";
 import ContactForm from "../forms/ContactForm";
 import CertificateForm from "../forms/CertificateForm";
+import ThemeSelectorForm from "../forms/ThemeSelectorForm";
 
 type BlockOption = {
   icon: React.ReactNode;
@@ -72,12 +73,17 @@ export default function Component() {
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
-    setSelectedBlock(null); // Reset selected block when opening dialog
+    setSelectedBlock(null); 
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedBlock(null);
+  };
+
+  const handleGridClick = () => {
+    setSelectedBlock("Theme");
+    setIsDialogOpen(true);
   };
 
   return (
@@ -99,7 +105,8 @@ export default function Component() {
           >
             <Plus className="w-5 h-5" />
           </button>
-          <button className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md">
+          <button className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md"
+            onClick={handleGridClick}>
             <Grid className="w-5 h-5" />
           </button>
           <button className="p-2 border text-gray-600 hover:bg-gray-100 rounded-md">
@@ -142,7 +149,7 @@ export default function Component() {
             </div>
           ) : (
             <div className="p-2">
-              {selectedBlock.toLowerCase().includes("experience") && (
+              {selectedBlock === "Experience" && (
                 <ExperienceForm onClose={() => setSelectedBlock(null)} />
               )}
               {selectedBlock === "About" && (
@@ -151,7 +158,7 @@ export default function Component() {
               {selectedBlock === "Education" && (
                 <EducationForm onClose={() => setSelectedBlock(null)} />
               )}
-               {selectedBlock === "Award" && (
+              {selectedBlock === "Award" && (
                 <AwardForm onClose={() => setSelectedBlock(null)} />
               )}
               {selectedBlock === "Course" && (
@@ -160,7 +167,7 @@ export default function Component() {
               {selectedBlock === "Skill" && (
                 <SkillForm onClose={() => setSelectedBlock(null)} />
               )}
-               {selectedBlock === "Language" && (
+              {selectedBlock === "Language" && (
                 <LanguageForm onClose={() => setSelectedBlock(null)} />
               )}
               {selectedBlock === "Interest" && (
@@ -169,8 +176,11 @@ export default function Component() {
               {selectedBlock === "Contact" && (
                 <ContactForm onClose={() => setSelectedBlock(null)} />
               )}
-               {selectedBlock === "Certificate" && (
+              {selectedBlock === "Certificate" && (
                 <CertificateForm onClose={() => setSelectedBlock(null)} />
+              )}
+              {selectedBlock === "Theme" && (
+                <ThemeSelectorForm  />
               )}
             </div>
           )}
