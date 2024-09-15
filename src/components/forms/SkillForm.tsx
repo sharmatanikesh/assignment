@@ -45,7 +45,7 @@ export default function SkillForm({ onClose }: EducationFormProps) {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     name: "skills",
     control,
   });
@@ -69,19 +69,19 @@ export default function SkillForm({ onClose }: EducationFormProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-2 bg-white p-2 rounded-lg shadow-sm"
+        className=" bg-white  rounded-lg "
       >
         {fields.map((field, index) => (
-          <div key={field.id} className="flex items-end gap-4 mb-2">
+          <div key={field.id} className="flex items-end gap-2 mb-2">
             <div className="flex-grow flex flex-col">
-              <Label htmlFor={`skills.${index}.degree`} className="text-sm font-medium text-gray-700">
+              <Label htmlFor={`skills.${index}.degree`} className="text-sm truncate font-semibold text-gray-700">
                 Add Skill<span className="text-red-500">*</span>
               </Label>
               <div className="flex items-center">
                 <Input
                   id={`skills.${index}.degree`}
                   {...register(`skills.${index}.degree` as const)}
-                  className="border-gray-300 flex-grow"
+                  className="border-gray-300 flex-grow "
                   placeholder="Enter soft or hard skill"
                 />
                 {errors.skills?.[index]?.degree && (
@@ -106,9 +106,7 @@ export default function SkillForm({ onClose }: EducationFormProps) {
                   </Select>
                 )}
               />
-              {errors.skills?.[index]?.level && (
-                <p className="text-red-500 text-sm">{errors.skills[index].level.message}</p>
-              )}
+              
               <Button
                 type="button"
                 variant="outline"
@@ -118,15 +116,6 @@ export default function SkillForm({ onClose }: EducationFormProps) {
               >
                 <LinkIcon className="h-4 w-4" />
                 <span className="ml-2">Add Link</span>
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => remove(index)}
-                className="px-3 py-2 h-10 border-red-300 text-red-500 hover:bg-red-50"
-              >
-                Remove
               </Button>
             </div>
           </div>
