@@ -74,7 +74,7 @@ export default function SkillForm({ onClose }: EducationFormProps) {
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-end gap-2 mb-2">
             <div className="flex-grow flex flex-col">
-              <Label htmlFor={`skills.${index}.degree`} className="text-sm truncate font-semibold text-gray-700">
+              <Label htmlFor={`skills.${index}.degree`} className="text-sm truncate font-semibold text-black">
                 Add Skill<span className="text-red-500">*</span>
               </Label>
               <div className="flex items-center">
@@ -89,7 +89,7 @@ export default function SkillForm({ onClose }: EducationFormProps) {
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <Controller
                 name={`skills.${index}.level` as const}
                 control={control}
@@ -114,14 +114,14 @@ export default function SkillForm({ onClose }: EducationFormProps) {
                 onClick={() => setIsUrlFormOpen(true)}
                 className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
               >
-                <LinkIcon className="h-4 w-4" />
+                <LinkIcon className="h-3 w-3" />
                 <span className="ml-2">Add Link</span>
               </Button>
             </div>
           </div>
         ))}
 
-        <div className="flex justify-center py-2">
+        <div className="flex justify-center py-1">
           <span
             onClick={() => append({ degree: "", level: "" })}
             className="text-orange-500 cursor-pointer"
