@@ -15,9 +15,11 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, LinkIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
+import { DatePicker } from "@/lib/DatePicker";
+import { format } from "date-fns";
 
 const schema = z.object({
   degree: z.string().min(1, { message: "Degree is required" }),
@@ -51,11 +53,24 @@ export default function EducationForm({ onClose }: EducationFormProps) {
   const [isCurrentDate, setIsCurrentDate] = useState(false);
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
+
+  const handleDateChange = (field: "startDate" | "endDate", date: Date) => {
+    const formattedDate = format(date, "MM-yyyy");
+    setValue(field, formattedDate);
+    if (field === "startDate") {
+      setSelectedStartDate(date);
+    } else {
+      setSelectedEndDate(date);
+    }
+  };
 
   const handleCurrentDateChange = (checked: boolean) => {
     setIsCurrentDate(checked);
     if (checked) {
       const currentDate = new Date();
+      setSelectedEndDate(currentDate);
       const formattedDate = `${String(currentDate.getMonth() + 1).padStart(
         2,
         "0"
@@ -194,9 +209,14 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 id="startDate"
                 {...register("startDate")}
                 className="border-gray-300"
+                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
                 placeholder="MM/YYYY"
+                onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <DatePicker
+              selectedDate={selectedStartDate}
+              onDateChange={(date) => handleDateChange("startDate", date)}
+            />
             </div>
           
           </div>
@@ -213,10 +233,15 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 id="endDate"
                 {...register("endDate")}
                 className="border-gray-300"
+                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
                 placeholder="MM/YYYY"
                 disabled={isCurrentDate}
+                onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <DatePicker
+              selectedDate={selectedEndDate}
+              onDateChange={(date) => handleDateChange("endDate", date)}
+            />
             </div>
           
             <div className="flex items-center space-x-2">

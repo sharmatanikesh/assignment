@@ -1,4 +1,4 @@
-
+import "react-day-picker/dist/style.css";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
@@ -30,7 +30,7 @@ export function DatePicker({ selectedDate, onDateChange }: DatePickerProps) {
           <CalendarIcon className="w-5 h-5 text-gray-600" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="p-2 w-auto z-50"> 
+      <PopoverContent className="p-1 w-auto z-50"> 
         <DayPicker
           mode="single"
           selected={selectedDate}

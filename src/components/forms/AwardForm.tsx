@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, LinkIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
+import { DatePicker } from "@/lib/DatePicker";
+import { format } from "date-fns";
 
 const schema = z.object({
   award: z.string().min(1, { message: "Award is required" }),
@@ -29,6 +31,7 @@ export default function AwardForm({ onClose }: CourseFormProps) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -36,8 +39,18 @@ export default function AwardForm({ onClose }: CourseFormProps) {
 
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
 
-  
+  const handleDateChange = (field: "date", date: Date) => {
+    const formattedDate = format(date, "MM-yyyy");
+    setValue(field, formattedDate);
+    if (field === "date") {
+      setSelectedStartDate(date);
+    } else {
+      setSelectedEndDate(date);
+    }
+  };
   const onSubmit = (data: FormData) => {
     console.log('Form submitted:', data);
     onClose();
@@ -92,7 +105,6 @@ export default function AwardForm({ onClose }: CourseFormProps) {
             className="border-gray-300"
             placeholder="Enter Institution"
           />
-         
         </div>
         <div className="grid grid-cols-1 gap-4">
           <div className="space-y-1">
@@ -106,12 +118,16 @@ export default function AwardForm({ onClose }: CourseFormProps) {
               <Input
                 id="date"
                 {...register("date")}
+                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
                 className="border-gray-300"
                 placeholder="MM/YYYY"
+                onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <DatePicker
+              selectedDate={selectedStartDate}
+              onDateChange={(date) => handleDateChange("date", date)}
+            />
             </div>
-            
           </div>
         </div>
 
@@ -130,7 +146,7 @@ export default function AwardForm({ onClose }: CourseFormProps) {
           />
         </div>
 
-        <div className="flex justify-end mt-1">
+        <div className="flex justify-end mt-2">
           <Button
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 text-white"

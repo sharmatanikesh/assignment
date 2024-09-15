@@ -10,10 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { X } from 'lucide-react';
-import { format } from 'date-fns';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+import { DatePicker } from "@/lib/DatePicker";
+import { format } from "date-fns";
 
 // Define validation schema
 const schema = z.object({
@@ -23,7 +21,7 @@ const schema = z.object({
   city: z.string().min(1, { message: 'City is required' }),
   country: z.string().optional(),
   startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  endDate: z.string().optional(),
   present: z.boolean().optional(),
   skills: z.array(z.string()).optional(),
 });
@@ -48,6 +46,18 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
 
   const [skills, setSkills] = useState(['Figma', 'Maze', 'Adobe XD']);
   const [isCurrentDate, setIsCurrentDate] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
+
+  const handleDateChange = (field: "startDate" | "endDate", date: Date) => {
+    const formattedDate = format(date, "MM-yyyy");
+    setValue(field, formattedDate);
+    if (field === "startDate") {
+      setSelectedStartDate(date);
+    } else {
+      setSelectedEndDate(date);
+    }
+  };
 
   const removeSkill = (skill: string) => {
     setSkills(skills.filter(s => s !== skill));
@@ -56,6 +66,8 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
   const handleCurrentDateChange = (checked: boolean) => {
     setIsCurrentDate(checked);
     if (checked) {
+      const currentDate = new Date();
+      setSelectedEndDate(currentDate);
       setValue('endDate', undefined);
     }
   };
@@ -145,73 +157,50 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
 
         <div className="flex gap-2">
           <div className="w-1/2 space-y-1">
-            <Label htmlFor="start-date" className='font-semibold text-black'>Start Date</Label>
-            <Controller
-              control={control}
-              name="startDate"
-              render={({ field }) => (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "MM/yyyy")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              )}
+          <Label
+              htmlFor="startDate"
+              className="font-semibold text-black"
+            >
+              Start Date
+            </Label>
+            <div className="relative">
+              <Input
+                id="startDate"
+                {...register("startDate")}
+                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
+                className="border-gray-300"
+                placeholder="MM/YYYY"
+                onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
+              />
+              <DatePicker
+              selectedDate={selectedStartDate}
+              onDateChange={(date) => handleDateChange("startDate", date)}
             />
+              {/* <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" /> */}
+            </div>
           </div>
           <div className="w-1/2 space-y-1">
-            <Label htmlFor="end-date" className='font-semibold text-black'>End Date</Label>
-            <Controller
-              control={control}
-              name="endDate"
-              render={({ field }) => (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                      disabled={isCurrentDate}
-                    >
-                      {field.value ? (
-                        format(field.value, "MM/yyyy")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              )}
+          <Label
+              htmlFor="endDate"
+              className="font-semibold text-black"
+            >
+              End Date
+            </Label>
+            <div className="relative">
+              <Input
+                id="endDate"
+                {...register("endDate")}
+                className="border-gray-300"
+                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
+                placeholder="MM/YYYY"
+                disabled={isCurrentDate}
+                onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
+              />
+              <DatePicker
+              selectedDate={selectedEndDate}
+              onDateChange={(date) => handleDateChange("endDate", date)}
             />
+            </div>
             <div className="flex items-center gap-2">
               <Checkbox
                 id="present"
@@ -238,10 +227,10 @@ export default function ExperienceForm({onClose}:ExperienceFormProps) {
           </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-2">
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white mt-2"
+            className="bg-orange-500 hover:bg-orange-600 text-white "
           >
             Save
           </Button>
