@@ -41,7 +41,8 @@ export default function AwardForm({ onClose }: CourseFormProps) {
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
-
+  console.log(enteredUrl);
+  console.log(selectedEndDate);
   const handleDateChange = (field: "date", date: Date) => {
     const formattedDate = format(date, "MM-yyyy");
     setValue(field, formattedDate);

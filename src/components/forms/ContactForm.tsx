@@ -33,11 +33,11 @@ export default function ContactForm({ onClose }: ContactFormProps) {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      interests: [{ contact: "" }],
+      interests: [{ contact: "",}],
     },
   });
+  const [activeTab, setActiveTab] = useState<"social" | "resume">("social")
 
-  const [activeTab, setActiveTab] = useState<"social" | "resume">("social");
   const { fields, append } = useFieldArray({
     name: "interests",
     control,
@@ -47,8 +47,7 @@ export default function ContactForm({ onClose }: ContactFormProps) {
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
   console.log(enteredUrl);
 
-  const [isChecked, setIsChecked] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<"skillsnap" | "custom" | null>(null);
 
   const handleUrlSubmit = (url: string) => {
     setEnteredUrl(url);
@@ -60,17 +59,6 @@ export default function ContactForm({ onClose }: ContactFormProps) {
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
-
-  const handleSkillSnapResumeChange = () => {
-    setIsChecked(true);
-    setIsChecked2(false);
-  };
-
-  const handleUploadCustomChange = () => {
-    setIsChecked(false);
-    setIsChecked2(true);
-  };
-
   return (
     <>
       <div className="flex mb-2">
@@ -101,75 +89,77 @@ export default function ContactForm({ onClose }: ContactFormProps) {
       >
         {activeTab === "social" && (
           <div>
-            {fields.map((field, index) => (
-              <div key={field.id} className="flex gap-4 mb-4">
-                <div className="w-3/4 flex flex-col">
-                  <Label
-                    htmlFor={`interests.${index}.degree`}
-                    className="text-sm font-semibold text-black"
-                  >
-                    Platform<span className="text-red-500">*</span>
-                  </Label>
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex gap-4 mb-4">
+              <div className="w-3/4 flex flex-col">
+                <Label
+                  htmlFor={`interests.${index}.degree`}
+                  className="text-sm font-semibold text-black"
+                >
+                  Platform<span className="text-red-500">*</span>
+                </Label>
                   <Select>
-                    <SelectTrigger id="platform" className="w-full border-gray-200 rounded-md mt-1">
-                      <SelectValue placeholder="Select Platform" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="linkedin">LinkedIn</SelectItem>
-                      <SelectItem value="github">GitHub</SelectItem>
-                      <SelectItem value="twitter">Twitter</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {errors.interests?.[index]?.contact && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.interests[index].contact.message}
-                    </p>
-                  )}
-                </div>
-                <div className="w-1/4 flex flex-col">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsUrlFormOpen(true)}
-                    className=" mt-6 p-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
-                  >
-                    <LinkIcon className="h-4 w-4" />
-                    <span className="ml-2 p-0.5 pr-2">Add Link</span>
-                  </Button>
-                </div>
+                  <SelectTrigger id="platform" className="w-full border-gray-200 rounded-md mt-1">
+                    <SelectValue placeholder="Select Platform" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                    <SelectItem value="github">GitHub</SelectItem>
+                    <SelectItem value="twitter">Twitter</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.interests?.[index]?.contact && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.interests[index].contact.message}
+                  </p>
+                )}
               </div>
-            ))}
-
-            <div className="flex justify-center py-2">
-              <span
-                onClick={() => append({ contact: "" })}
-                className="text-orange-500 cursor-pointer"
+              <div className="w-1/4 flex flex-col">
+                <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsUrlFormOpen(true)}
+                className=" mt-6  p-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
               >
-                + Add More
-              </span>
+                <LinkIcon className="h-4 w-4" />
+                <span className="ml-2 p-0.5 pr-2">Add Link</span>
+              </Button>
+              </div>
             </div>
+          ))}
+
+          <div className="flex justify-center py-2">
+            <span
+              onClick={() => append({ contact: ""})}
+              className="text-orange-500 cursor-pointer"
+            >
+              + Add More
+            </span>
+          </div>
           </div>
         )}
 
         {activeTab === "resume" && (
           <div className="space-y-4">
-            <div className={`flex items-center space-x-3 p-4 rounded-lg border ${
-              isChecked
-                ? 'border-orange-500 bg-orange-50'
-                : 'border-gray-200'
-            }`}>
+            <div
+              className={`flex items-center space-x-3 p-4 rounded-lg border ${
+                selectedOption === "skillsnap"
+                  ? 'border-orange-500 bg-orange-50'
+                  : 'border-gray-200'
+              }`}
+            >
               <Checkbox
                 id="skillSnapResume"
-                checked={isChecked}
-                onChange={handleSkillSnapResumeChange}
+                checked={selectedOption === "skillsnap"}
+                onClick={() => setSelectedOption("skillsnap")}
               />
               <div className="flex-grow">
                 <label htmlFor="skillSnapResume" className="text-sm font-medium">
                   SkillSnap Resume
                 </label>
                 <p className="text-sm text-gray-500">
-                  This will use custom ATS friendly resume generated by skillsnap
+                  This will use custom ATS-friendly resume generated by SkillSnap
                 </p>
               </div>
               <Button
@@ -180,15 +170,18 @@ export default function ContactForm({ onClose }: ContactFormProps) {
                 Download
               </Button>
             </div>
-            <div className={`flex items-center space-x-3 p-4 border border-gray-200 rounded-lg ${
-              isChecked2
-                ? 'border-orange-500 bg-orange-50'
-                : 'border-gray-200'
-            }`}>
+
+            <div
+              className={`flex items-center space-x-3 p-4 border rounded-lg ${
+                selectedOption === "custom"
+                  ? 'border-orange-500 bg-orange-50'
+                  : 'border-gray-200'
+              }`}
+            >
               <Checkbox
                 id="uploadCustom"
-                checked={isChecked2}
-                onChange={handleUploadCustomChange}
+                checked={selectedOption === "custom"}
+                onClick={() => setSelectedOption("custom")}
               />
               <div>
                 <label htmlFor="uploadCustom" className="text-sm font-medium">
@@ -200,9 +193,10 @@ export default function ContactForm({ onClose }: ContactFormProps) {
           </div>
         )}
 
+
         <div className="flex justify-between items-center mt-6">
           <div className="flex items-center space-x-2">
-            <Checkbox id="includeContactUs" />
+            <Checkbox id="includeContactUs"/>
             <label htmlFor="includeContactUs" className="text-sm text-gray-700">
               Include Contact Us
             </label>
