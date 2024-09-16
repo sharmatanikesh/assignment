@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
+import { Check } from "lucide-react";
 
 const schema = z.object({
   skills: z.array(
@@ -135,14 +136,15 @@ export default function LanguageForm({ onClose }: EducationFormProps) {
           </span>
         </div>
 
-        <div className="flex justify-end pt-2">
-          <Button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            Save
-          </Button>
-        </div>
+        <div className="flex justify-end mt-2">
+        <Button
+          type="submit"
+          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+        >
+          <Check className="mr-2  " size={18} />{" "}
+          Save
+        </Button>
+      </div>
       </form>
 
       <UrlForm

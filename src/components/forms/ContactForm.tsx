@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
-import { LinkIcon } from "lucide-react";
+import { Check, LinkIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
 
@@ -201,9 +201,15 @@ export default function ContactForm({ onClose }: ContactFormProps) {
               Include Contact Us
             </label>
           </div>
-          <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-6">
-            Save
-          </Button>
+          <div className="flex justify-end mt-2">
+        <Button
+          type="submit"
+          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+        >
+          <Check className="mr-2  " size={18} />{" "}
+          Save
+        </Button>
+      </div>
         </div>
       </form>
 

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
-import { LinkIcon } from "lucide-react";
+import { Check, LinkIcon } from "lucide-react";
 
 const schema = z.object({
   interests: z.array(
@@ -107,14 +107,15 @@ export default function InterestForm({ onClose }: InterestFormProps) {
           </span>
         </div>
 
-        <div className="flex justify-end ">
-          <Button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            Save
-          </Button>
-        </div>
+        <div className="flex justify-end mt-2">
+        <Button
+          type="submit"
+          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+        >
+          <Check className="mr-2  " size={18} />{" "}
+          Save
+        </Button>
+      </div>
       </form>
 
       <UrlForm

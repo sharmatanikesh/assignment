@@ -13,7 +13,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { LinkIcon } from "lucide-react";
+import { Check, LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { UrlForm } from "@/components/forms/UrlForm";
 
@@ -130,14 +130,15 @@ export default function SkillForm({ onClose }: EducationFormProps) {
           </span>
         </div>
 
-        <div className="flex justify-end pt-1">
-          <Button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            Save
-          </Button>
-        </div>
+        <div className="flex justify-end mt-2">
+        <Button
+          type="submit"
+          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+        >
+          <Check className="mr-2  " size={18} />{" "}
+          Save
+        </Button>
+      </div>
       </form>
 
       <UrlForm
