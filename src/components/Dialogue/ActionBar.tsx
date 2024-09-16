@@ -152,9 +152,6 @@ export default function Component() {
               {selectedBlock === "Experience" && (
                 <ExperienceForm onClose={() => setSelectedBlock(null)} />
               )}
-              {selectedBlock === "About" && (
-                <CertificateForm onClose={() => setSelectedBlock(null)} />
-              )}
               {selectedBlock === "Education" && (
                 <EducationForm onClose={() => setSelectedBlock(null)} />
               )}

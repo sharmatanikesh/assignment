@@ -15,9 +15,10 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check, X } from "lucide-react";
+import { Check, LinkIcon, X } from "lucide-react";
 import { DatePicker } from "@/lib/DatePicker";
 import { format } from "date-fns";
+import { UrlForm } from "./UrlForm";
 
 // Define validation schema
 const schema = z.object({
@@ -52,6 +53,8 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
 
   const [skills, setSkills] = useState(["Figma", "Maze", "Adobe XD"]);
   const [isCurrentDate, setIsCurrentDate] = useState(false);
+  const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
+  const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<
     Date | undefined
   >();
@@ -67,6 +70,8 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
     }
   };
 
+  console.log(enteredUrl);
+
   const removeSkill = (skill: string) => {
     setSkills(skills.filter((s) => s !== skill));
   };
@@ -80,6 +85,11 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
     }
   };
 
+  const handleUrlSubmit = (url: string) => {
+    setEnteredUrl(url);
+    setIsUrlFormOpen(false);
+  };
+
   const onSubmit = (data: FormData) => {
     console.log("Form submitted:", data);
     onClose();
@@ -87,20 +97,34 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-1 rounded-lg">
       <div className="space-y-1">
-        <Label htmlFor="company" className="font-semibold text-black">
-          Company Name<span className="text-red-500">*</span>
-        </Label>
-        <Input
-          id="company"
-          {...register("company")}
-          placeholder="Enter company name"
-        />
-        {errors.company && (
-          <p className="text-red-500 text-sm">{errors.company.message}</p>
-        )}
-      </div>
+      <Label htmlFor="company" className="text-sm font-semibold text-black">
+            Company Name<span className="text-red-500">*</span>
+          </Label>
+          <div className="flex items-center gap-2">
+            <Input
+              id="company"
+              {...register("company")}
+              className="flex-grow border-gray-300"
+              placeholder="Enter company name"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsUrlFormOpen(true)}
+              className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
+            >
+              <LinkIcon className="h-4 w-4" />
+              <span className="ml-2">Add Link</span>
+            </Button>
+          </div>
+          {errors.company && (
+            <p className="text-red-500 text-sm">{errors.company.message}</p>
+          )}
+        </div>
 
       <div className="flex gap-2">
         <div className="flex-grow space-y-1">
@@ -268,5 +292,12 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
         </Button>
       </div>
     </form>
+
+    <UrlForm
+        isOpen={isUrlFormOpen}
+        onClose={() => setIsUrlFormOpen(false)}
+        onSave={handleUrlSubmit}
+      />
+    </>
   );
 }
