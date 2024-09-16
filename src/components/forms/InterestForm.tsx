@@ -33,7 +33,7 @@ export default function InterestForm({ onClose }: InterestFormProps) {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      interests: [{ interest: "",}],
+      interests: [{ interest: "" }],
     },
   });
 
@@ -52,7 +52,7 @@ export default function InterestForm({ onClose }: InterestFormProps) {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -85,22 +85,32 @@ export default function InterestForm({ onClose }: InterestFormProps) {
             </div>
             <div className="w-1/4 flex flex-col">
               <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
-              className=" mt-5 px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
-            >
-              <LinkIcon className="h-4 w-4" />
-              <span className="ml-2 p-0.5 pr-2">View Link</span>
-            </Button>
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (enteredUrl) {
+                    // Open the URL in a new tab if it exists
+                    //window.open(enteredUrl, "_blank");
+                    setIsUrlFormOpen(true);
+                  } else {
+                    setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                  }
+                }}
+                className=" mt-5 px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
+              >
+                <LinkIcon className="h-4 w-4" />
+                <span className="ml-2 p-0.5 pr-2">
+                  {enteredUrl ? "View Link" : "Add Link"}
+                </span>
+              </Button>
             </div>
           </div>
         ))}
 
         <div className="flex justify-center ">
           <span
-            onClick={() => append({ interest: ""})}
+            onClick={() => append({ interest: "" })}
             className="text-orange-500 cursor-pointer"
           >
             + Add More
@@ -108,14 +118,13 @@ export default function InterestForm({ onClose }: InterestFormProps) {
         </div>
 
         <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm,} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,8 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-interface CertificateFormProps{
-  onClose:()=>void
+interface CertificateFormProps {
+  onClose: () => void;
 }
 export default function CertificateForm({ onClose }: CertificateFormProps) {
   const {
@@ -40,8 +40,9 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
 
-
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedStartDate, setSelectedStartDate] = useState<
+    Date | undefined
+  >();
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
 
   const handleCurrentDateChange = (checked: boolean) => {
@@ -69,7 +70,7 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -86,7 +87,10 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
         className="space-y-1 bg-white p-1 rounded-lg "
       >
         <div className="space-y-2">
-          <Label htmlFor="certificate" className="text-sm font-semibold text-black">
+          <Label
+            htmlFor="certificate"
+            className="text-sm font-semibold text-black"
+          >
             Certificate<span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
@@ -100,11 +104,21 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
+              onClick={() => {
+                if (enteredUrl) {
+                  // Open the URL in a new tab if it exists
+                  //window.open(enteredUrl, "_blank");
+                  setIsUrlFormOpen(true);
+                } else {
+                  setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                }
+              }}
               className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">View Link</span>
+              <span className="ml-2">
+                {enteredUrl ? "View Link" : "Add Link"}
+              </span>
             </Button>
           </div>
           {errors.certificate && (
@@ -124,7 +138,9 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               <Input
                 id="startDate"
                 {...register("startDate")}
-                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
+                value={
+                  selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
+                }
                 className="border-gray-300"
                 placeholder="MM/YYYY"
                 onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
@@ -147,16 +163,18 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
               <Input
                 id="endDate"
                 {...register("endDate")}
-                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
+                value={
+                  selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""
+                }
                 className="border-gray-300 "
                 placeholder="MM/YYYY"
                 disabled={isNoExpiry}
                 onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedEndDate}
-              onDateChange={(date) => handleDateChange("endDate", date)}
-            />
+                selectedDate={selectedEndDate}
+                onDateChange={(date) => handleDateChange("endDate", date)}
+              />
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -191,14 +209,13 @@ export default function CertificateForm({ onClose }: CertificateFormProps) {
         </div>
 
         <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,8 @@ import { format } from "date-fns";
 const schema = z.object({
   award: z.string().min(1, { message: "Award is required" }),
   issuedBy: z.string().optional(),
-  date: z
-    .string().optional(),
-    description:z.string().optional()
+  date: z.string().optional(),
+  description: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -39,7 +38,9 @@ export default function AwardForm({ onClose }: CourseFormProps) {
 
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedStartDate, setSelectedStartDate] = useState<
+    Date | undefined
+  >();
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
   console.log(enteredUrl);
   console.log(selectedEndDate);
@@ -53,7 +54,7 @@ export default function AwardForm({ onClose }: CourseFormProps) {
     }
   };
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -84,11 +85,21 @@ export default function AwardForm({ onClose }: CourseFormProps) {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
+              onClick={() => {
+                if (enteredUrl) {
+                  // Open the URL in a new tab if it exists
+                  //window.open(enteredUrl, "_blank");
+                  setIsUrlFormOpen(true);
+                } else {
+                  setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                }
+              }}
               className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">Add Link</span>
+              <span className="ml-2">
+                {enteredUrl ? "View Link" : "Add Link"}
+              </span>
             </Button>
           </div>
           {errors.award && (
@@ -97,7 +108,10 @@ export default function AwardForm({ onClose }: CourseFormProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="issuedBy" className="text-sm font-semibold text-black">
+          <Label
+            htmlFor="issuedBy"
+            className="text-sm font-semibold text-black"
+          >
             Issued By
           </Label>
           <Input
@@ -109,25 +123,24 @@ export default function AwardForm({ onClose }: CourseFormProps) {
         </div>
         <div className="grid grid-cols-1 gap-4">
           <div className="space-y-1">
-            <Label
-              htmlFor="date"
-             className="text-sm font-semibold text-black"
-            >
+            <Label htmlFor="date" className="text-sm font-semibold text-black">
               Date
             </Label>
             <div className="relative">
               <Input
                 id="date"
                 {...register("date")}
-                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
+                value={
+                  selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
+                }
                 className="border-gray-300"
                 placeholder="MM/YYYY"
                 onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedStartDate}
-              onDateChange={(date) => handleDateChange("date", date)}
-            />
+                selectedDate={selectedStartDate}
+                onDateChange={(date) => handleDateChange("date", date)}
+              />
             </div>
           </div>
         </div>
@@ -135,7 +148,7 @@ export default function AwardForm({ onClose }: CourseFormProps) {
         <div className="space-y-2">
           <Label
             htmlFor="description"
-           className="text-sm font-semibold text-black"
+            className="text-sm font-semibold text-black"
           >
             Description
           </Label>
@@ -146,17 +159,15 @@ export default function AwardForm({ onClose }: CourseFormProps) {
             placeholder="Type Here..."
           />
         </div>
-          
+
         <div className="flex justify-end mt-2">
-         
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

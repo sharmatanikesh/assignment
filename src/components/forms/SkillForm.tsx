@@ -60,7 +60,7 @@ export default function SkillForm({ onClose }: EducationFormProps) {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -74,7 +74,10 @@ export default function SkillForm({ onClose }: EducationFormProps) {
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-end gap-2 mb-2">
             <div className="flex-grow flex flex-col">
-              <Label htmlFor={`skills.${index}.degree`} className="text-sm truncate font-semibold text-black">
+              <Label
+                htmlFor={`skills.${index}.degree`}
+                className="text-sm truncate font-semibold text-black"
+              >
                 Add Skill<span className="text-red-500">*</span>
               </Label>
               <div className="flex items-center">
@@ -85,7 +88,9 @@ export default function SkillForm({ onClose }: EducationFormProps) {
                   placeholder="Enter soft or hard skill"
                 />
                 {errors.skills?.[index]?.degree && (
-                  <p className="text-red-500 text-sm ml-2">{errors.skills[index].degree.message}</p>
+                  <p className="text-red-500 text-sm ml-2">
+                    {errors.skills[index].degree.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -106,16 +111,26 @@ export default function SkillForm({ onClose }: EducationFormProps) {
                   </Select>
                 )}
               />
-              
+
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => setIsUrlFormOpen(true)}
+                onClick={() => {
+                  if (enteredUrl) {
+                    // Open the URL in a new tab if it exists
+                    //window.open(enteredUrl, "_blank");
+                    setIsUrlFormOpen(true);
+                  } else {
+                    setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                  }
+                }}
                 className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
               >
                 <LinkIcon className="h-3 w-3" />
-                <span className="ml-2">Add Link</span>
+                <span className="ml-2">
+                  {enteredUrl ? "View Link" : "Add Link"}
+                </span>
               </Button>
             </div>
           </div>
@@ -131,14 +146,13 @@ export default function SkillForm({ onClose }: EducationFormProps) {
         </div>
 
         <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

@@ -26,11 +26,9 @@ const schema = z.object({
   school: z.string().optional(),
   city: z.string().optional(),
   country: z.string().optional(),
-  description:z.string().optional(),
-  startDate: z
-    .string().optional(),
-  endDate: z
-    .string().optional(),
+  description: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -53,7 +51,9 @@ export default function EducationForm({ onClose }: EducationFormProps) {
   const [isCurrentDate, setIsCurrentDate] = useState(false);
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedStartDate, setSelectedStartDate] = useState<
+    Date | undefined
+  >();
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
 
   const handleDateChange = (field: "startDate" | "endDate", date: Date) => {
@@ -86,7 +86,7 @@ export default function EducationForm({ onClose }: EducationFormProps) {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -112,11 +112,21 @@ export default function EducationForm({ onClose }: EducationFormProps) {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
+              onClick={() => {
+                if (enteredUrl) {
+                  // Open the URL in a new tab if it exists
+                  //window.open(enteredUrl, "_blank");
+                  setIsUrlFormOpen(true);
+                } else {
+                  setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                }
+              }}
               className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">View Link</span>
+              <span className="ml-2">
+                {enteredUrl ? "View Link" : "Add Link"}
+              </span>
             </Button>
           </div>
           {errors.degree && (
@@ -125,7 +135,7 @@ export default function EducationForm({ onClose }: EducationFormProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="school"className="text-sm font-semibold text-black">
+          <Label htmlFor="school" className="text-sm font-semibold text-black">
             School
           </Label>
           <Input
@@ -163,13 +173,12 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 </Select>
               )}
             />
-           
           </div>
 
           <div className="space-y-1">
             <Label
               htmlFor="country"
-             className="text-sm font-semibold text-black"
+              className="text-sm font-semibold text-black"
             >
               Country
             </Label>
@@ -192,7 +201,6 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 </Select>
               )}
             />
-           
           </div>
         </div>
 
@@ -209,16 +217,17 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 id="startDate"
                 {...register("startDate")}
                 className="border-gray-300"
-                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
+                value={
+                  selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
+                }
                 placeholder="MM/YYYY"
                 onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedStartDate}
-              onDateChange={(date) => handleDateChange("startDate", date)}
-            />
+                selectedDate={selectedStartDate}
+                onDateChange={(date) => handleDateChange("startDate", date)}
+              />
             </div>
-          
           </div>
 
           <div className="space-y-1">
@@ -233,17 +242,19 @@ export default function EducationForm({ onClose }: EducationFormProps) {
                 id="endDate"
                 {...register("endDate")}
                 className="border-gray-300"
-                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
+                value={
+                  selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""
+                }
                 placeholder="MM/YYYY"
                 disabled={isCurrentDate}
                 onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedEndDate}
-              onDateChange={(date) => handleDateChange("endDate", date)}
-            />
+                selectedDate={selectedEndDate}
+                onDateChange={(date) => handleDateChange("endDate", date)}
+              />
             </div>
-          
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="current"
@@ -277,14 +288,13 @@ export default function EducationForm({ onClose }: EducationFormProps) {
         </div>
 
         <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

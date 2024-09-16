@@ -21,16 +21,13 @@ import { UrlForm } from "@/components/forms/UrlForm";
 import { DatePicker } from "@/lib/DatePicker";
 import { format } from "date-fns";
 
-
 const schema = z.object({
   course: z.string().min(1, { message: "Degree is required" }),
   school: z.string().optional(),
   city: z.string().optional(),
   country: z.string().optional(),
-  startDate: z
-    .string().optional(),
-  endDate: z
-    .string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
   description: z.string().optional(),
 });
 
@@ -54,7 +51,9 @@ export default function CourseForm({ onClose }: CourseFormProps) {
   const [isCurrentDate, setIsCurrentDate] = useState(false);
   const [isUrlFormOpen, setIsUrlFormOpen] = useState(false);
   const [enteredUrl, setEnteredUrl] = useState<string | null>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
+  const [selectedStartDate, setSelectedStartDate] = useState<
+    Date | undefined
+  >();
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
 
   const handleDateChange = (field: "startDate" | "endDate", date: Date) => {
@@ -68,7 +67,7 @@ export default function CourseForm({ onClose }: CourseFormProps) {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     onClose();
     // Handle form submission logic here, e.g., send data to the server or update state
   };
@@ -112,11 +111,21 @@ export default function CourseForm({ onClose }: CourseFormProps) {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
+              onClick={() => {
+                if (enteredUrl) {
+                  // Open the URL in a new tab if it exists
+                  //window.open(enteredUrl, "_blank");
+                  setIsUrlFormOpen(true);
+                } else {
+                  setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                }
+              }}
               className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">Add Link</span>
+              <span className="ml-2">
+                {enteredUrl ? "View Link" : "Add Link"}
+              </span>
             </Button>
           </div>
           {errors.course && (
@@ -134,7 +143,6 @@ export default function CourseForm({ onClose }: CourseFormProps) {
             className="border-gray-300"
             placeholder="Enter Institution"
           />
-         
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -161,7 +169,6 @@ export default function CourseForm({ onClose }: CourseFormProps) {
                 </Select>
               )}
             />
-           
           </div>
 
           <div className="space-y-1">
@@ -190,7 +197,6 @@ export default function CourseForm({ onClose }: CourseFormProps) {
                 </Select>
               )}
             />
-        
           </div>
         </div>
 
@@ -206,15 +212,17 @@ export default function CourseForm({ onClose }: CourseFormProps) {
               <Input
                 id="startDate"
                 {...register("startDate")}
-                value={selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""}
+                value={
+                  selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
+                }
                 className="border-gray-300"
                 placeholder="MM/YYYY"
                 onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedStartDate}
-              onDateChange={(date) => handleDateChange("startDate", date)}
-            />
+                selectedDate={selectedStartDate}
+                onDateChange={(date) => handleDateChange("startDate", date)}
+              />
             </div>
             {errors.startDate && (
               <p className="text-red-500 text-sm">{errors.startDate.message}</p>
@@ -224,7 +232,7 @@ export default function CourseForm({ onClose }: CourseFormProps) {
           <div className="space-y-1">
             <Label
               htmlFor="endDate"
-            className="text-sm font-semibold text-black"
+              className="text-sm font-semibold text-black"
             >
               End Date
             </Label>
@@ -233,15 +241,17 @@ export default function CourseForm({ onClose }: CourseFormProps) {
                 id="endDate"
                 {...register("endDate")}
                 className="border-gray-300"
-                value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
+                value={
+                  selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""
+                }
                 placeholder="MM/YYYY"
                 disabled={isCurrentDate}
                 onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
               />
               <DatePicker
-              selectedDate={selectedEndDate}
-              onDateChange={(date) => handleDateChange("endDate", date)}
-            />
+                selectedDate={selectedEndDate}
+                onDateChange={(date) => handleDateChange("endDate", date)}
+              />
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -276,14 +286,13 @@ export default function CourseForm({ onClose }: CourseFormProps) {
         </div>
 
         <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2  " size={18} />{" "}
-          Save
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2  " size={18} /> Save
+          </Button>
+        </div>
       </form>
 
       <UrlForm

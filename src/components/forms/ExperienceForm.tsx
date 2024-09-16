@@ -98,9 +98,12 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-1 rounded-lg">
-      <div className="space-y-1">
-      <Label htmlFor="company" className="text-sm font-semibold text-black">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-1 rounded-lg"
+      >
+        <div className="space-y-1">
+          <Label htmlFor="company" className="text-sm font-semibold text-black">
             Company Name<span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
@@ -114,11 +117,21 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsUrlFormOpen(true)}
+              onClick={() => {
+                if (enteredUrl) {
+                  // Open the URL in a new tab if it exists
+                  //window.open(enteredUrl, "_blank");
+                  setIsUrlFormOpen(true);
+                } else {
+                  setIsUrlFormOpen(true); // Open the URL form if no URL exists
+                }
+              }}
               className="px-3 py-2 h-10 border-orange-300 text-orange-500 hover:bg-orange-50"
             >
               <LinkIcon className="h-4 w-4" />
-              <span className="ml-2">Add Link</span>
+              <span className="ml-2">
+                {enteredUrl ? "View Link" : "Add Link"}
+              </span>
             </Button>
           </div>
           {errors.company && (
@@ -126,174 +139,179 @@ export default function ExperienceForm({ onClose }: ExperienceFormProps) {
           )}
         </div>
 
-      <div className="flex gap-2">
-        <div className="flex-grow space-y-1">
-          <Label htmlFor="title" className="font-semibold text-black">
-            Title<span className="text-red-500">*</span>
-          </Label>
-          <Input id="title" {...register("title")} placeholder="Type Here..." />
-          {errors.title && (
-            <p className="text-red-500 text-sm">{errors.title.message}</p>
-          )}
-        </div>
-        <div className="w-1/3 space-y-1">
-          <Label htmlFor="type" className="font-semibold text-black">
-            Type
-          </Label>
-          <Controller
-            name="type"
-            control={control}
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="type">
-                  <SelectValue placeholder="Full Time" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="full-time">Full Time</SelectItem>
-                  <SelectItem value="part-time">Part Time</SelectItem>
-                  <SelectItem value="contract">Contract</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-2">
-        <div className="w-1/2 space-y-1">
-          <Label htmlFor="city" className="font-semibold text-black">
-            City
-          </Label>
-          <Controller
-            name="city"
-            control={control}
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="city">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="new-york">New York</SelectItem>
-                  <SelectItem value="london">London</SelectItem>
-                  <SelectItem value="tokyo">Tokyo</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-        <div className="w-1/2 space-y-1">
-          <Label htmlFor="country" className="font-semibold text-black">
-            Country
-          </Label>
-          <Controller
-            name="country"
-            control={control}
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="country">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="usa">USA</SelectItem>
-                  <SelectItem value="uk">UK</SelectItem>
-                  <SelectItem value="japan">Japan</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-2">
-        <div className="w-1/2 space-y-1">
-          <Label htmlFor="startDate" className="font-semibold text-black">
-            Start Date
-          </Label>
-          <div className="relative">
-            <Input
-              id="startDate"
-              {...register("startDate")}
-              value={
-                selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
-              }
-              className="border-gray-300"
-              placeholder="MM/YYYY"
-              onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
-            />
-            <DatePicker
-              selectedDate={selectedStartDate}
-              onDateChange={(date) => handleDateChange("startDate", date)}
-            />
-            {/* <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" /> */}
-          </div>
-        </div>
-        <div className="w-1/2 space-y-1">
-          <Label htmlFor="endDate" className="font-semibold text-black">
-            End Date
-          </Label>
-          <div className="relative">
-            <Input
-              id="endDate"
-              {...register("endDate")}
-              className="border-gray-300"
-              value={selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""}
-              placeholder="MM/YYYY"
-              disabled={isCurrentDate}
-              onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
-            />
-            <DatePicker
-              selectedDate={selectedEndDate}
-              onDateChange={(date) => handleDateChange("endDate", date)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="present"
-              checked={isCurrentDate}
-              onCheckedChange={handleCurrentDateChange}
-              className="rounded text-orange-500 focus:ring-orange-500"
-            />
-            <Label htmlFor="present" className="text-sm text-gray-600">
-              Present (Current)
+        <div className="flex gap-2">
+          <div className="flex-grow space-y-1">
+            <Label htmlFor="title" className="font-semibold text-black">
+              Title<span className="text-red-500">*</span>
             </Label>
+            <Input
+              id="title"
+              {...register("title")}
+              placeholder="Type Here..."
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title.message}</p>
+            )}
+          </div>
+          <div className="w-1/3 space-y-1">
+            <Label htmlFor="type" className="font-semibold text-black">
+              Type
+            </Label>
+            <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="type">
+                    <SelectValue placeholder="Full Time" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="full-time">Full Time</SelectItem>
+                    <SelectItem value="part-time">Part Time</SelectItem>
+                    <SelectItem value="contract">Contract</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
         </div>
-      </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="skills" className="font-semibold text-black">
-          Skills Used
-        </Label>
-        <div className="flex flex-wrap gap-2 border rounded-md p-2">
-          {skills.map((skill) => (
-            <span
-              key={skill}
-              className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
-            >
-              {skill}
-              <button
-                onClick={() => removeSkill(skill)}
-                className="ml-1 text-gray-500 hover:text-gray-700"
-              >
-                <X size={14} />
-              </button>
-            </span>
-          ))}
+        <div className="flex gap-2">
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="city" className="font-semibold text-black">
+              City
+            </Label>
+            <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="city">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="new-york">New York</SelectItem>
+                    <SelectItem value="london">London</SelectItem>
+                    <SelectItem value="tokyo">Tokyo</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="country" className="font-semibold text-black">
+              Country
+            </Label>
+            <Controller
+              name="country"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="country">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="usa">USA</SelectItem>
+                    <SelectItem value="uk">UK</SelectItem>
+                    <SelectItem value="japan">Japan</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="flex justify-end mt-2">
-        <Button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
-        >
-          <Check className="mr-2" size={16} />{" "}
-          Save
-        </Button>
-      </div>
-    </form>
+        <div className="flex gap-2">
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="startDate" className="font-semibold text-black">
+              Start Date
+            </Label>
+            <div className="relative">
+              <Input
+                id="startDate"
+                {...register("startDate")}
+                value={
+                  selectedStartDate ? format(selectedStartDate, "MM-yyyy") : ""
+                }
+                className="border-gray-300"
+                placeholder="MM/YYYY"
+                onChange={(e) => setSelectedStartDate(new Date(e.target.value))}
+              />
+              <DatePicker
+                selectedDate={selectedStartDate}
+                onDateChange={(date) => handleDateChange("startDate", date)}
+              />
+              {/* <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" /> */}
+            </div>
+          </div>
+          <div className="w-1/2 space-y-1">
+            <Label htmlFor="endDate" className="font-semibold text-black">
+              End Date
+            </Label>
+            <div className="relative">
+              <Input
+                id="endDate"
+                {...register("endDate")}
+                className="border-gray-300"
+                value={
+                  selectedEndDate ? format(selectedEndDate, "MM-yyyy") : ""
+                }
+                placeholder="MM/YYYY"
+                disabled={isCurrentDate}
+                onChange={(e) => setSelectedEndDate(new Date(e.target.value))}
+              />
+              <DatePicker
+                selectedDate={selectedEndDate}
+                onDateChange={(date) => handleDateChange("endDate", date)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="present"
+                checked={isCurrentDate}
+                onCheckedChange={handleCurrentDateChange}
+                className="rounded text-orange-500 focus:ring-orange-500"
+              />
+              <Label htmlFor="present" className="text-sm text-gray-600">
+                Present (Current)
+              </Label>
+            </div>
+          </div>
+        </div>
 
-    <UrlForm
+        <div className="space-y-1">
+          <Label htmlFor="skills" className="font-semibold text-black">
+            Skills Used
+          </Label>
+          <div className="flex flex-wrap gap-2 border rounded-md p-2">
+            {skills.map((skill) => (
+              <span
+                key={skill}
+                className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
+              >
+                {skill}
+                <button
+                  onClick={() => removeSkill(skill)}
+                  className="ml-1 text-gray-500 hover:text-gray-700"
+                >
+                  <X size={14} />
+                </button>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-2">
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white flex items-center"
+          >
+            <Check className="mr-2" size={16} /> Save
+          </Button>
+        </div>
+      </form>
+
+      <UrlForm
         isOpen={isUrlFormOpen}
         onClose={() => setIsUrlFormOpen(false)}
         onSave={handleUrlSubmit}
